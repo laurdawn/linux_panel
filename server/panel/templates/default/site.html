@@ -1,0 +1,66 @@
+$def with (tData)
+<div class="main-content pb55">
+			<div class="container-fluid">
+				<div class="pos-box bgw mtb15">
+					<div class="position f14 c9 pull-left">
+							<a class="plr10 c4" href="/">$tData['lan']['H1']</a>/<span class="plr10 c4">$tData['lan']['H2']</span>
+						</div>
+					<div class="search pull-right">
+						<form target="hid" onsubmit='getWeb(1,$$("#SearchValue").prop("value"))'>
+							<input type="text" id="SearchValue" class="ser-text pull-left" placeholder="$tData['lan']['SEARCH']"/>
+							<button type="button" class="ser-sub pull-left" onclick='getWeb(1,$$("#SearchValue").prop("value"))'></button>
+						</form>
+						<iframe name='hid' id="hid" style="display:none"></iframe>
+					</div>
+				</div>
+				<div class="safe bgw mtb15 pd15">
+					<!-- <div class="important-title">
+						<p><span class="glyphicon glyphicon-alert" style="color: #f39c12; margin-right: 10px;"></span> $tData['lan']['PS']</p>
+					</div> -->
+					<!-- <button onclick="UploadFiles('/www/server/tomcat/webapps/');window.location.reload();" class="btn btn-success btn-sm btn-title" type="button">$tData['lan']['BTN1']</button>&nbsp; -->
+					<button id="restart" onclick="ServiceAdmin('tomcat','restart')" class="btn btn-default btn-sm btn-title" type="button">$tData['lan']['BTN4']</button>
+					<button id="recycle_bin" onclick="Recycle_bin('open')" title="回收站" style="position: absolute; border-color: #ccc; right: 77px;">回收站</button>
+					<div class="divtable mtb10">
+						<div class="tablescroll">
+						<table class="table table-hover" style="min-width: 900px;border: 0 none;">
+							<thead>
+								<tr>
+									<th width="30"><input type="checkbox" onclick="checkSelect();" id="setBox"></th>
+									<th >$tData['lan']['TH1']</th>
+									<th >$tData['lan']['TH2']</th>
+									<th >$tData['lan']['TH3']</th>
+									<th>$tData['lan']['TH4']</th>
+									<th>$tData['lan']['TH5']</th>
+								</tr>
+							</thead>
+							<tbody id="webBody" class="list-list ui-selectable"></tbody>
+						</table>
+						</div>
+						<div class="dataTables_paginate paging_bootstrap pagination plr15" style="position: relative; top: -15px;">
+							<ul id="webPage" class="page"></ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+		<script type="text/javascript" src="/static/laydate/laydate.js?date=20180301"></script>
+        <script type="text/javascript" src="/static/js/upload.js"></script>
+		<script type="text/javascript" src="/static/js/files.js?date=20180124"></script>
+		<script type="text/javascript" src="/static/js/site.js?date=20180627"></script>
+		<script type="text/javascript">
+		$if not tData['isSetup']:
+			layer.msg('$tData["lan"]["JS1"]<a href="/soft" style="color:#20a53a; float: right;">$tData["lan"]["JS2"]</a>',{icon:7,shade: [0.3, '#000'],time:0});
+			$$(".layui-layer-shade").css("margin-left","180px");
+		$else:
+			$if tData['run']:
+				jQuery("#restart").before('<button onclick="ServiceAdmin(\'tomcat\',\'stop\')" class="btn btn-default btn-sm btn-title" type="button">$tData["lan"]["BTN3"]</button>&nbsp;')
+			$else:
+				jQuery("#restart").before('<button onclick="ServiceAdmin(\'tomcat\',\'start\')" class="btn btn-default btn-sm btn-title" type="button">$tData["lan"]["BTN2"]</button>&nbsp;')
+		if(getCookie('rank') == undefined || getCookie('rank') == null){
+			setCookie('rank','a');
+		}
+		getWeb("/www/server/tomcat/webapps/");
+		
+		setCookie('serverType','$web.ctx.session.webserver');
+	</script>
